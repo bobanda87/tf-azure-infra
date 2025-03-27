@@ -20,12 +20,10 @@ module "network" {
   identifier                = "001"
   resource_group_name       = azurerm_resource_group.rg["rg-${var.environment}-shared"].name
   location                  = var.region
-  vnet_address_space        = ["10.0.0.0/16"]
-  frontend_address_prefixes = ["10.0.1.0/24"]
-  backend_address_prefixes  = ["10.0.2.0/24"]
+  vnet_address_space        = var.vnet_address_space
+  frontend_address_prefixes = var.frontend_address_prefixes
+  backend_address_prefixes  = var.backend_address_prefixes
   tags                      = var.tags
-  frontend_subnet_nsg       = module.network.frontend_nsg_id
-  backend_subnet_nsg        = module.network.backend_nsg_id
   firewall_subnet_cidr      = var.firewall_subnet_cidr
   business_unit             = var.business_unit
 }
@@ -56,4 +54,9 @@ module "security" {
   source         = "./modules/security"
   security_email = var.security_email
   security_phone = var.security_phone
+}
+
+module "policy" {
+  source          = "./modules/policy"
+  allowed_regions = ["norwayeast"]
 }
