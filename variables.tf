@@ -50,3 +50,28 @@ variable "business_unit" {
   type        = string
   default     = "bis"
 }
+
+variable "security_email" {
+  description = "Email address for security notifications"
+  type        = string
+}
+
+variable "security_phone" {
+  description = "Phone number for security notifications"
+  type        = string
+}
+
+variable "key_vault_ip_rules" {
+  description = "List of allowed IP addresses for the Key Vault"
+  type        = list(string)
+}
+
+variable "key_vault_vnet_subnet_ids" {
+  description = "List of subnet IDs allowed to access the Key Vault"
+  type        = list(string)
+}
+
+variable "subscription_id" {
+  description = "The Azure subscription ID"
+  type        = string
+}

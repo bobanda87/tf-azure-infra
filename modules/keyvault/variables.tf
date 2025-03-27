@@ -32,3 +32,13 @@ variable "tenant_id" {
   description = "Tenant Id"
   type        = string
 }
+
+variable "key_vault_ip_rules" {
+  description = "List of allowed IP addresses for the Key Vault"
+  type        = list(string)
+}
+
+variable "key_vault_vnet_subnet_ids" {
+  description = "List of subnet IDs allowed to access the Key Vault"
+  type        = list(string)
+}

@@ -1,10 +1,20 @@
+resource "azurerm_network_ddos_protection_plan" "vnet_ddos_protection" {
+  name                = "ddos-plan-${var.environment}-${var.region}-${var.identifier}"
+  resource_group_name = var.resource_group_name
+  location            = var.region
+}
+
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-${var.environment}-${var.region}-${var.identifier}"
   location            = var.region
   resource_group_name = var.resource_group_name
   address_space       = var.vnet_address_space
+  tags                = var.tags
 
-  tags = var.tags
+  ddos_protection_plan {
+    id     = azurerm_network_ddos_protection_plan.vnet_ddos_protection.id
+    enable = true
+  }
 }
 
 ###
@@ -62,6 +72,11 @@ resource "azurerm_subnet" "subnet_backend" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.backend_address_prefixes
+  service_endpoints = [
+    "Microsoft.KeyVault",
+    "Microsoft.Storage",
+    "Microsoft.Sql"
+  ]
 }
 
 resource "azurerm_network_security_group" "nsg_backend" {
@@ -117,16 +132,28 @@ resource "azurerm_private_endpoint" "stg_private_endpoint" {
   }
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [private_dns_zone_group]
+  }
 }
 
 resource "azurerm_storage_account" "bis_storage_account_backend" {
-  name                     = "stg${var.environment}${var.region}${var.identifier}"
-  resource_group_name      = var.resource_group_name
-  location                 = var.region
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  name                            = "stg${var.environment}${var.region}${var.identifier}"
+  resource_group_name             = var.resource_group_name
+  location                        = var.region
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  is_hns_enabled                  = true
+  public_network_access_enabled   = false
+  allow_nested_items_to_be_public = false
+  tags                            = var.tags
 
-  tags = var.tags
+  network_rules {
+    default_action             = "Deny"
+    bypass                     = ["Logging", "Metrics", "AzureServices"]
+    virtual_network_subnet_ids = [azurerm_subnet.subnet_backend.id]
+  }
 }
 
 ###
