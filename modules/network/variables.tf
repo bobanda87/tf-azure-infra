@@ -57,11 +57,21 @@ variable "backend_subnet_nsg" {
 variable "vnet_subnet_prefixes" {
   description = "The subnet prefixes in the virtual network"
   type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24"] # Example default
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "subnet_names" {
   description = "List of subnet names"
   type        = list(string)
-  default     = ["frontend", "backend"] # Example default
+  default     = ["frontend", "backend"]
+}
+
+variable "business_unit" {
+  description = "A business unit name"
+  type        = string
+}
+
+variable "firewall_subnet_cidr" {
+  type        = list(string)
+  description = "CIDR block for the Azure Firewall subnet."
 }

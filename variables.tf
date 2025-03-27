@@ -34,3 +34,14 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "firewall_subnet_cidr" {
+  type        = list(string)
+  description = "CIDR block for the Azure Firewall subnet."
+}
+
+variable "business_unit" {
+  description = "A business unit name"
+  type        = string
+  default     = "bis"
+}

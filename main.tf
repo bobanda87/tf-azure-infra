@@ -26,4 +26,6 @@ module "network" {
   tags                      = var.tags
   frontend_subnet_nsg       = module.network.frontend_nsg_id
   backend_subnet_nsg        = module.network.backend_nsg_id
+  firewall_subnet_cidr      = var.firewall_subnet_cidr
+  business_unit             = var.business_unit
 }
