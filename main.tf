@@ -40,3 +40,12 @@ module "keyvault" {
   tags                = var.tags
   tenant_id           = var.tenant_id
 }
+
+module "monitor" {
+  source              = "./modules/monitoring"
+  environment         = var.environment
+  region              = var.region
+  resource_group_name = azurerm_resource_group.rg["rg-${var.environment}-shared"].name
+  target_resource_id  = module.network.vnet_id
+  tags                = var.tags
+}
