@@ -13,11 +13,7 @@ resource "azurerm_monitor_diagnostic_setting" "monitor_diagnostic" {
   log_analytics_workspace_id = azurerm_log_analytics_workspace.monitor_workspace.id
 
   enabled_log {
-    category = "Administrative"
-  }
-
-  enabled_log {
-    category = "Security"
+    category = "VMProtectionAlerts"
   }
 
   metric {
