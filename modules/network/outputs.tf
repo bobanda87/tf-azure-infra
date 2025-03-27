@@ -1,4 +1,3 @@
-# outputs.tf
 output "vnet_id" {
   description = "The ID of the virtual network"
   value       = azurerm_virtual_network.vnet.id
@@ -29,7 +28,7 @@ output "backend_nsg_id" {
   value       = azurerm_network_security_group.nsg_backend.id
 }
 
-# output "stg_private_endpoint_id" {
-#   description = "The ID of the private endpoint"
-#   value       = azurerm_private_endpoint.stg_private_endpoint.id
-# }
+output "stg_private_endpoint_id" {
+  description = "The ID of the private endpoint"
+  value       = azurerm_private_endpoint.stg_private_endpoint.id
+}
