@@ -1,6 +1,5 @@
-# variables.tf
 variable "environment" {
-  description = "The environment for this deployment (e.g., prod, dev)"
+  description = "The environment for this deployment"
   type        = string
 }
 

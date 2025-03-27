@@ -29,6 +29,11 @@ variable "resource_group_names" {
   ]
 }
 
+variable "tenant_id" {
+  description = "Tenant id"
+  type        = string
+}
+
 variable "tags" {
   description = "A map of tags to apply to resources"
   type        = map(string)

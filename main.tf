@@ -29,3 +29,14 @@ module "network" {
   firewall_subnet_cidr      = var.firewall_subnet_cidr
   business_unit             = var.business_unit
 }
+
+module "keyvault" {
+  source              = "./modules/keyvault"
+  environment         = var.environment
+  region              = var.region
+  identifier          = "002"
+  resource_group_name = azurerm_resource_group.rg["rg-${var.environment}-shared"].name
+  location            = var.region
+  tags                = var.tags
+  tenant_id           = var.tenant_id
+}
