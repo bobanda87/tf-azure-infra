@@ -6,18 +6,30 @@ resource "azurerm_policy_definition" "restrict_regions" {
   mode         = "All"
   display_name = "Restrict Resource Deployment to Allowed Regions"
 
+  parameters = <<PARAMETERS
+{
+  "allowedRegions": {
+    "type": "Array",
+    "defaultValue": ["norwayeast"],
+    "metadata": {
+      "description": "The list of allowed regions"
+    }
+  }
+}
+PARAMETERS
+
   policy_rule = <<POLICY_RULE
 {
     "if": {
       "not": {
         "field": "location",
-        "equals": "norwayeast"
+        "in": "[parameters('allowedRegions')]"
       }
     },
     "then": {
       "effect": "Deny"
     }
-  }
+}
 POLICY_RULE
 }
 
