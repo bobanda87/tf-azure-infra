@@ -75,3 +75,18 @@ variable "subscription_id" {
   description = "The Azure subscription ID"
   type        = string
 }
+
+variable "vnet_address_space" {
+  description = "Vnet IP address range"
+  type        = list(string)
+}
+
+variable "frontend_address_prefixes" {
+  description = "Frontend subnet IP address range"
+  type        = list(string)
+}
+
+variable "backend_address_prefixes" {
+  description = "Backend subnet IP address range"
+  type        = list(string)
+}

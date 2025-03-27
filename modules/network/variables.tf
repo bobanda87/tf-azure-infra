@@ -43,16 +43,6 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "frontend_subnet_nsg" {
-  description = "Network Security Group for frontend subnet"
-  type        = string
-}
-
-variable "backend_subnet_nsg" {
-  description = "Network Security Group for backend subnet"
-  type        = string
-}
-
 variable "vnet_subnet_prefixes" {
   description = "The subnet prefixes in the virtual network"
   type        = list(string)
