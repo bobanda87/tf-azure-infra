@@ -23,6 +23,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CLIENT_SECRET }}
+
       - name: Set up Taskfile
         run: |
           curl -sSL https://github.com/go-task/task/releases/download/v3.0.0/task_linux_amd64.tar.gz | tar -xzv
