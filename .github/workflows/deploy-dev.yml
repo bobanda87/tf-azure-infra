@@ -1,0 +1,29 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy_dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Taskfile
+        run: |
+          curl -sSL https://github.com/go-task/task/releases/download/v3.0.0/task_linux_amd64.tar.gz | tar -xzv
+          sudo mv task /usr/local/bin/
+
+      - name: Terraform Init
+        run: task init ENV=dev
+
+      - name: Terraform Plan
+        run: task plan ENV=dev
+
+      - name: Terraform Apply
+        run: task apply ENV=dev
