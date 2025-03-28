@@ -1,0 +1,48 @@
+version: "3"
+
+vars:
+  ENVIRONMENTS: dev staging prod
+
+tasks:
+  init:
+    desc: Initiate the Terraform development environment
+    silent: true
+    cmds:
+      - terraform init {{.CLI_ARGS}}
+
+  plan:
+    desc: Plan the Terraform scripts for the specified $ENV
+    silent: true
+    cmds:
+      - task: verify-env
+      - terraform plan -var-file="environments/${ENV}.tfvars" {{.CLI_ARGS}}
+
+  apply:
+    desc: Apply the Terraform scripts for the specified $ENV
+    silent: true
+    cmds:
+      - task: verify-env
+      - terraform apply -var-file="environments/${ENV}.tfvars" {{.CLI_ARGS}}
+
+  format:
+    desc: Format the Terraform files
+    silent: true
+    cmds:
+      - terraform fmt -recursive {{.CLI_ARGS}}
+
+  verify-env:
+    desc: Verifies that the ENV environment variable is valid
+    silent: true
+    preconditions:
+      - '[[ "{{.ENVIRONMENTS}}" =~ (^|[[:space:]])${ENV}($|[[:space:]]) ]] || exit 1'
+
+  help:
+    desc: Display this help
+    silent: true
+    cmds:
+      - task --list
+
+  default:
+    silent: true
+    cmds:
+      - task: help

@@ -1,0 +1,43 @@
+name: Deploy to Staging
+
+on:
+  workflow_run:
+    workflows: ["Deploy to Dev"]
+    types:
+      - completed
+
+jobs:
+  # Dummy job that runs independently to satisfy the GitHub Actions requirement
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Dummy job to trigger the workflow
+        run: echo "This is a dummy job to trigger the workflow"
+
+  deploy_staging:
+    runs-on: ubuntu-latest
+    needs: setup # Ensures that this runs after the dummy 'setup' job
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      - name: Set up Taskfile
+        run: |
+          curl -sSL https://github.com/go-task/task/releases/download/v3.0.0/task_linux_amd64.tar.gz | tar -xzv
+          sudo mv task /usr/local/bin/
+
+      - name: Terraform Init
+        run: task init ENV=staging
+
+      - name: Terraform Plan
+        run: task plan ENV=staging
+
+      - name: Terraform Apply
+        run: task apply ENV=staging
